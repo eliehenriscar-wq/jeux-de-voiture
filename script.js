@@ -15,6 +15,23 @@ document.addEventListener('keydown', (e) => {
     if (e.code === 'Space' && !gameActive) startGame();
 });
 document.addEventListener('keyup', (e) => keys[e.code] = false);
+const player = document.getElementById('player');
+const road = document.getElementById('road');
+const message = document.getElementById('message');
+const scoreElement = document.getElementById('score');
+
+let gameActive = false;
+let score = 0;
+let playerPos = { x: 150 };
+let keys = {};
+let enemySpeed = 5;
+
+// Controles
+document.addEventListener('keydown', (e) => {
+    keys[e.code] = true;
+    if (e.code === 'Space' && !gameActive) startGame();
+});
+document.addEventListener('keyup', (e) => keys[e.code] = false);
 
 function startGame() {
     gameActive = true;
