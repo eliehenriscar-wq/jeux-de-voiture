@@ -1,27 +1,24 @@
-/* Reset basique */
 body {
     margin: 0;
-    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #333;
-    font-family: Arial, sans-serif;
+    background-color: #222;
+    font-family: 'Arial', sans-serif;
     overflow: hidden;
 }
 
-/* Conteneur principal */
 #game-container {
     position: relative;
-    width: 400px;
-    height: 600px;
-    background-color: #555; /* Couleur de l'asphalte */
-    border: 5px solid #fff;
+    width: 350px;
+    height: 100vh;
+    background-color: #444;
+    border-left: 5px dashed #fff;
+    border-right: 5px dashed #fff;
     overflow: hidden;
 }
 
-/* La route avec des lignes pointillées */
 #road {
     position: absolute;
     width: 100%;
@@ -29,47 +26,45 @@ body {
     background: repeating-linear-gradient(
         transparent,
         transparent 50px,
-        #fff 50px,
-        #fff 100px
+        rgba(255,255,255,0.3) 50px,
+        rgba(255,255,255,0.3) 100px
     );
-    animation: roadMove 1.5s linear infinite;
+    animation: moveRoad 0.8s linear infinite;
+    display: none; /* Escondido até começar */
 }
 
-@keyframes roadMove {
+@keyframes moveRoad {
     from { background-position-y: 0; }
     to { background-position-y: 100px; }
 }
 
-/* Style de la voiture du joueur */
 #player {
     position: absolute;
-    bottom: 20px;
-    left: 175px; /* (400px / 2) - (50px / 2) */
+    bottom: 50px;
+    left: 150px;
     width: 50px;
     height: 80px;
-    background-color: #e74c3c; /* Rouge */
-    border-radius: 5px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    background-color: #ff3e3e;
+    border-radius: 8px;
+    display: none;
+    z-index: 2;
 }
 
-/* Style de l'ennemi */
-#enemy {
+.enemy {
     position: absolute;
-    top: -100px;
-    left: 100px;
     width: 50px;
     height: 80px;
-    background-color: #f1c40f; /* Jaune */
-    border-radius: 5px;
+    background-color: #f1c40f;
+    border-radius: 8px;
+    z-index: 1;
 }
 
-/* Score et Message */
 #score {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 20px;
+    left: 20px;
     color: white;
-    font-size: 20px;
+    font-size: 24px;
     z-index: 10;
 }
 
@@ -79,8 +74,9 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
-    text-align: center;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0,0,0,0.8);
     padding: 20px;
+    text-align: center;
+    width: 80%;
     z-index: 20;
 }
