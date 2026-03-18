@@ -1,0 +1,86 @@
+/* Reset basique */
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #333;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+/* Conteneur principal */
+#game-container {
+    position: relative;
+    width: 400px;
+    height: 600px;
+    background-color: #555; /* Couleur de l'asphalte */
+    border: 5px solid #fff;
+    overflow: hidden;
+}
+
+/* La route avec des lignes pointillées */
+#road {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        transparent,
+        transparent 50px,
+        #fff 50px,
+        #fff 100px
+    );
+    animation: roadMove 1.5s linear infinite;
+}
+
+@keyframes roadMove {
+    from { background-position-y: 0; }
+    to { background-position-y: 100px; }
+}
+
+/* Style de la voiture du joueur */
+#player {
+    position: absolute;
+    bottom: 20px;
+    left: 175px; /* (400px / 2) - (50px / 2) */
+    width: 50px;
+    height: 80px;
+    background-color: #e74c3c; /* Rouge */
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+/* Style de l'ennemi */
+#enemy {
+    position: absolute;
+    top: -100px;
+    left: 100px;
+    width: 50px;
+    height: 80px;
+    background-color: #f1c40f; /* Jaune */
+    border-radius: 5px;
+}
+
+/* Score et Message */
+#score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    font-size: 20px;
+    z-index: 10;
+}
+
+#message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    background: rgba(0,0,0,0.7);
+    padding: 20px;
+    z-index: 20;
+}
