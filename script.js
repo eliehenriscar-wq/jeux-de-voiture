@@ -5,12 +5,10 @@ const scoreElement = document.getElementById('score');
 
 let gameActive = false;
 let score = 0;
-let playerPos = { x: 150 };
-let keys = {};
+let playerX = 130;
 let enemySpeed = 5;
-let animationFrameId;
+let keys = {};
 
-// Gerenciamento de teclas
 document.addEventListener('keydown', (e) => {
     keys[e.code] = true;
     if (e.code === 'Space' && !gameActive) startGame();
@@ -21,63 +19,52 @@ function startGame() {
     gameActive = true;
     score = 0;
     enemySpeed = 5;
-    playerPos.x = 150;
-    
-    scoreElement.innerText = `Score: 0`;
+    playerX = 130;
+    scoreElement.innerText = "Score: 0";
     message.style.display = 'none';
     player.style.display = 'block';
     road.style.display = 'block';
-    road.classList.add('animate-road');
     
-    // Limpa inimigos antigos
     document.querySelectorAll('.enemy').forEach(e => e.remove());
     
     spawnEnemy();
-    gameLoop();
+    requestAnimationFrame(gameLoop);
 }
 
 function gameLoop() {
     if (!gameActive) return;
 
-    // Movimentação suave
-    if (keys['ArrowLeft'] && playerPos.x > 5) playerPos.x -= 7;
-    if (keys['ArrowRight'] && playerPos.x < 295) playerPos.x += 7;
-
-    player.style.left = playerPos.x + 'px';
+    // Movimento do Jogador
+    if (keys['ArrowLeft'] && playerX > 0) playerX -= 5;
+    if (keys['ArrowRight'] && playerX < 260) playerX += 5;
+    player.style.left = playerX + 'px';
 
     const enemies = document.querySelectorAll('.enemy');
     enemies.forEach(enemy => {
         let top = parseInt(enemy.style.top);
         
-        // Se o inimigo sair da tela
         if (top > window.innerHeight) {
             enemy.remove();
             score++;
             scoreElement.innerText = `Score: ${score}`;
-            
-            // Dificuldade progressiva
-            if (score % 5 === 0) enemySpeed += 0.5;
-            
+            if (score % 5 === 0) enemySpeed += 0.5; // Aumenta dificuldade
             spawnEnemy();
         } else {
             enemy.style.top = (top + enemySpeed) + 'px';
         }
 
-        // Checar colisão
-        if (isColliding(player, enemy)) {
-            gameOver();
-        }
+        // Detecção de Colisão
+        if (isColliding(player, enemy)) gameOver();
     });
 
-    animationFrameId = requestAnimationFrame(gameLoop);
+    requestAnimationFrame(gameLoop);
 }
 
 function spawnEnemy() {
     if (!gameActive) return;
     const enemy = document.createElement('div');
     enemy.classList.add('enemy');
-    // Garante que o inimigo apareça dentro da estrada (350px largura - 50px do carro)
-    enemy.style.left = Math.floor(Math.random() * 300) + 'px';
+    enemy.style.left = Math.floor(Math.random() * 260) + 'px';
     enemy.style.top = '-100px';
     document.getElementById('game-container').appendChild(enemy);
 }
@@ -85,25 +72,17 @@ function spawnEnemy() {
 function isColliding(a, b) {
     let aRect = a.getBoundingClientRect();
     let bRect = b.getBoundingClientRect();
-    
-    // Colisão com "hitbox" reduzida para parecer mais justo
     return !(
-        aRect.bottom < bRect.top + 15 || 
-        aRect.top > bRect.bottom - 15 || 
-        aRect.right < bRect.left + 10 || 
-        aRect.left > bRect.right - 10
+        aRect.bottom < bRect.top || 
+        aRect.top > bRect.bottom || 
+        aRect.right < bRect.left || 
+        aRect.left > bRect.right
     );
 }
 
 function gameOver() {
     gameActive = false;
-    cancelAnimationFrame(animationFrameId);
-    road.classList.remove('animate-road');
-    
-    message.innerHTML = `
-        <h1 style="color: #ff4d4d; margin: 0;">BATIDA!</h1>
-        <p>Score Final: <b>${score}</b></p>
-        <p>Pressione <b>ESPAÇO</b> para tentar de novo</p>
-    `;
+    road.style.display = 'none';
+    message.innerHTML = `<h2>BATIDA!</h2><p>Pontos: ${score}</p><p>Aperte ESPAÇO</p>`;
     message.style.display = 'block';
 }

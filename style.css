@@ -5,17 +5,17 @@ body {
     align-items: center;
     height: 100vh;
     background-color: #222;
-    font-family: 'Arial', sans-serif;
     overflow: hidden;
+    font-family: sans-serif;
 }
 
 #game-container {
     position: relative;
-    width: 350px;
+    width: 300px;
     height: 100vh;
     background-color: #444;
-    border-left: 5px solid #fff;
-    border-right: 5px solid #fff;
+    border-left: 5px dashed #eee;
+    border-right: 5px dashed #eee;
     overflow: hidden;
 }
 
@@ -23,70 +23,75 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    /* Faixas da estrada */
-    background: linear-gradient(90deg, transparent 48%, #fff 48%, #fff 52%, transparent 52%);
-    background-size: 100% 100px;
+    background: linear-gradient(transparent 90%, #555 90%);
+    background-size: 100% 50px;
+    animation: moveRoad 0.4s linear infinite;
     display: none;
-}
-
-/* Animação da estrada */
-.animate-road {
-    animation: moveRoad 0.5s linear infinite;
 }
 
 @keyframes moveRoad {
     from { background-position-y: 0; }
-    to { background-position-y: 100px; }
-}
-
-#player, .enemy {
-    position: absolute;
-    width: 50px;
-    height: 90px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    border-radius: 5px; /* Caso não tenha imagem, vira um retângulo */
+    to { background-position-y: 50px; }
 }
 
 #player {
-    bottom: 50px;
-    background-color: #e74c3c; /* Cor de fallback */
-    background-image: url('carro.png');
+    position: absolute;
+    bottom: 20px;
+    width: 40px;
+    height: 70px;
+    background-color: #ff0000; /* Vermelho */
+    border-radius: 5px;
+    border: 2px solid #900;
     display: none;
     z-index: 5;
 }
 
+/* Detalhe do para-brisa do jogador */
+#player::after {
+    content: '';
+    position: absolute;
+    top: 10px; left: 5px;
+    width: 30px; height: 15px;
+    background: #add8e6;
+    border-radius: 2px;
+}
+
 .enemy {
-    background-color: #2ecc71; /* Cor de fallback */
-    background-image: url('carro.png');
-    transform: rotate(180deg);
-    filter: hue-rotate(150deg);
+    position: absolute;
+    width: 40px;
+    height: 70px;
+    background-color: #ffea00; /* Amarelo */
+    border-radius: 5px;
+    border: 2px solid #b8860b;
     z-index: 4;
+}
+
+/* Detalhe do para-brisa do inimigo */
+.enemy::after {
+    content: '';
+    position: absolute;
+    bottom: 10px; left: 5px;
+    width: 30px; height: 15px;
+    background: #333;
+    border-radius: 2px;
 }
 
 #score {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 10px; left: 10px;
     color: white;
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 20px;
     z-index: 10;
-    text-shadow: 2px 2px 4px #000;
 }
 
 #message {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     color: white;
-    background: rgba(0,0,0,0.9);
-    padding: 30px;
+    background: rgba(0,0,0,0.8);
+    padding: 20px;
     text-align: center;
     border-radius: 10px;
-    width: 250px;
     z-index: 20;
-    line-height: 1.5;
 }
