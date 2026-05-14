@@ -5,7 +5,7 @@ const gameArea = document.querySelector('#road');
 let playerStats = { speed: 5, score: 0, start: false };
 let keys = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false, Space: false };
 
-// Controles
+// Controles do Teclado
 document.addEventListener('keydown', (e) => {
     keys[e.key] = true;
     if (e.code === 'Space' && !playerStats.start) startGame();
@@ -13,7 +13,7 @@ document.addEventListener('keydown', (e) => {
 document.addEventListener('keyup', (e) => { keys[e.key] = false; });
 startScreen.addEventListener('click', () => { if (!playerStats.start) startGame(); });
 
-// Detectar Batida
+// Detectar colisão (batida)
 function isCollide(a, b) {
     let aRect = a.getBoundingClientRect();
     let bRect = b.getBoundingClientRect();
@@ -36,10 +36,19 @@ function moveEnemies(player) {
         if (item.y >= 750) {
             item.y = -300;
             item.style.left = Math.floor(Math.random() * 240) + "px";
+            
+            // ATUALIZADO: Muda a cor do carro para outra aleatória quando ele reaparece no topo
+            item.className = 'enemy ' + getRandomColor();
         }
         item.y += playerStats.speed;
         item.style.top = item.y + "px";
     });
+}
+
+// NOVO: Função que escolhe uma classe de cor aleatória
+function getRandomColor() {
+    let colors = ['yellow-car', 'green-car', 'purple-car'];
+    return colors[Math.floor(Math.random() * colors.length)];
 }
 
 function startGame() {
@@ -48,7 +57,7 @@ function startGame() {
     startScreen.style.display = "none";
     gameArea.innerHTML = '<div class="side-walk left"></div><div class="side-walk right"></div><div id="line-container"></div><div id="player"></div>';
     
-    // Criar Faixas
+    // Criar faixas da estrada
     for (let x = 0; x < 5; x++) {
         let line = document.createElement('div');
         line.classList.add('line');
@@ -57,10 +66,10 @@ function startGame() {
         document.getElementById('line-container').appendChild(line);
     }
 
-    // Criar Inimigos
+    // ATUALIZADO: Cria os 3 carros iniciais já com cores diferentes
     for (let x = 0; x < 3; x++) {
         let enemy = document.createElement('div');
-        enemy.classList.add('enemy');
+        enemy.className = 'enemy ' + getRandomColor(); // Adiciona a classe da cor aleatória
         enemy.y = ((x + 1) * 350) * -1;
         enemy.style.top = enemy.y + "px";
         enemy.style.left = Math.floor(Math.random() * 240) + "px";
@@ -92,5 +101,5 @@ function gamePlay() {
 function endGame() {
     playerStats.start = false;
     startScreen.style.display = "block";
-    startScreen.innerHTML = `GAME OVER!<br>Pontuação: ${playerStats.score}<br><b>Clique para Reiniciar</b>`;
+    startScreen.innerHTML = `GAME OVER!<br>Pontuação: ${playerStats.score}<br><b>Clique aqui para reiniciar</b>`;
 }
